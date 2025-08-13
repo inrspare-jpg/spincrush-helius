@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Crush - Premium Gaming Platform</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        @keyframes rotate {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-320px * 6)); }
+        }
+        
+        @keyframes gameSlide {
+            0%, 10% { transform: translateX(0); }        /* 第一张停 10% */
+            12.5%, 22.5% { transform: translateX(-12.5%); } /* 第二张停 10% */
+            25%, 35% { transform: translateX(-25%); }       /* 第三张停 10% */
+            37.5%, 47.5% { transform: translateX(-37.5%); } 
+            50%, 60% { transform: translateX(-50%); } 
+            62.5%, 72.5% { transform: translateX(-62.5%); } 
+            75%, 85% { transform: translateX(-75%); } 
+            87.5%, 97.5% { transform: translateX(-87.5%); } 
+            100% { transform: translateX(0); } /* 回到第一张 */
+        }
+
+        
+        @keyframes beamRotation {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        .card-section {
+            padding: 2em 1em;
+            background: #1e1e1e;
+            margin: 1em auto;
+            border-radius: 15px;
+            max-width: 1400px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .section-header {
+            text-align: center;
+            padding: 2vh 1em;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-header h3 {
+            font-size: 1.5em;
+            margin: 0;
+            color: #22ffaa;
+            text-shadow: 0 0 10px rgba(0, 255, 100, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        
+        .section-header h3::before,
+        .section-header h3::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px solid #22ffaa;
+            margin: 0 15px;
+            opacity: 0.5;
+        }
+        
+        .card-scroll-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+        
+        .card-scroll-track {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            animation: scroll 60s linear infinite;
+            will-change: transform;
+        }
+        
+        .scroll-card {
+            flex: 0 0 300px;
+            background: #2a2a2a;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #333;
+        }
+        
+        .scroll-card:hover {
+            transform: translateY(-10px) scale(1.03) !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border-color: #22ffaa;
+        }
+        
+        .scroll-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #333;
+        }
+        
+        .scroll-card div {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .scroll-card h3 {
+            margin: 0.3em 0;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .scroll-card p {
+            color: #aaa;
+            font-size: 0.85em;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+                .section-header h3 {
+                        font-size: 1.2em;
+                        white-space: normal;
+                        flex-wrap: wrap;
+                }
+                
+                .section-header h3::before,
+                .section-header h3::after {
+                        flex: 0 0 30px;
+                        margin: 0 10px;
+                }
+                
+                .card-section {
+                        padding: 1em 0.5em;
+                        margin: 0.5em;
+                }
+                
+                .card-scroll-container {
+                        overflow: hidden;
+                        padding: 10px 0;
+                }
+                
+                .card-scroll-track {
+                        animation: scroll 60s linear infinite;
+                        width: max-content;
+                        gap: 15px;
+                }
+
+                .scroll-card img {
+                        height: 200px; 
+                }
+                
+                .scroll-card {
+                        flex: 0 0 85vw;
+                }
+                
+                .scroll-card h3 {
+                        font-size: 1em;
+                }
+                
+                /* Game carousel mobile styles */
+                .game-carousel-container {
+                        height: 180px;
+                }
+                
+                .game-carousel {
+                        height: 180px;
+                }
+                
+                /* About section mobile styles */
+                .about-section .card-scroll-track {
+                        display: flex;
+                        flex-direction: column;
+                        animation: none;
+                        width: 100%;
+                        gap: 15px;
+                }
+                
+                .about-section .scroll-card {
+                        flex: 0 0 auto;
+                        width: 100%;
+                }
+        }
+        
+        .cta-button {
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(135deg, #22ffaa 0%, #00cc66 50%, #007733 100%);
+            transition: all 0.3s ease;
+            padding: 1em 2em;
+            border-radius: 999px;
+            font-size: 1em;
+            font-weight: bold;
+            border: none;
+            display: inline-block;
+            margin: 1em 0;
+            box-shadow: 0 4px 20px rgba(0, 255, 100, 0.4);
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section {
+            margin: 0;
+            padding: 3em 0;
+            background: linear-gradient(to bottom, #111, #222);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            margin: 0;
+            font-size: 2.5em;
+            color: #fff; 
+            -webkit-text-stroke: 1.5px rgba(0, 200, 0, 0.8);
+            text-stroke: 1.5px rgba(0, 200, 0, 0.8);
+            text-shadow: 
+                0 0 3px #39FF14,
+                0 0 6px #39FF14,
+                0 0 10px rgba(57, 255, 20, 0.6);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4em;
+            font-weight: 500;
+            margin-bottom: 1.5em;
+            color: #ccc;
+        }
+        
+        .light-beams {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .light-beam {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            width: 4px;
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(0,255,100,0) 0%, rgba(0,255,100,0.8) 15%, rgba(0,255,100,0.5) 50%, rgba(0,255,100,0) 100%);
+            animation: beamRotation 8s infinite linear;
+        }
+        
+        .light-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,255,100,0.8) 0%, rgba(0,255,100,0.4) 50%, rgba(0,255,100,0) 70%);
+            filter: blur(20px);
+        }
+        
+        .logo-container {
+            perspective: 1000px;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo-cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate 15s infinite linear;
+        }
+        
+        .logo-face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: transparent;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            backface-visibility: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 100, 0.3);
+        }
+        
+        .logo-face img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 100, 0.8));
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3em;
+            font-size: 0.9em;
+            background: #1a1a1a;
+            color: #777;
+            border-top: 1px solid #333;
+        }
+        
+        /* Game carousel styles */
+        .game-carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 455px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid #22ffaa;
+            height: 300px;
+        }
+        
+        .game-carousel {
+            display: flex;
+            width: 800%; /* 8 张图 */
+            height: 100%;
+            animation: gameSlide 25s infinite;
+        }
+        
+        .game-carousel img {
+            width: 12.5%;
+            height: 100%;
+            object-fit: contain;
+            background: #1e1e1e;
+        }
+        
+        /* About section styles */
+        .about-section {
+            padding: 2em 1em;
+            background: #1e1e1e;
+            margin: 1em auto;
+            border-radius: 15px;
+            max-width: 1400px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .about-section .card-scroll-container {
+            position: relative;
+            width: 100%;
+            overflow: visible;
+            padding: 20px 0;
+        }
+        
+        .about-section .card-scroll-track {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="light-beams">
+            <div class="light-beam" style="transform: translate(-50%, -50%) rotate(0deg);"></div>
+            <div class="light-beam" style="transform: translate(-50%, -50%) rotate(45deg); animation-direction: reverse;"></div>
+            <div class="light-beam" style="transform: translate(-50%, -50%) rotate(90deg);"></div>
+            <div class="light-beam" style="transform: translate(-50%, -50%) rotate(135deg); animation-direction: reverse;"></div>
+            <div class="light-glow"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="logo-container">
+                <div class="logo-cube">
+                    <div class="logo-face" style="transform: rotateY(0deg) translateZ(100px);">
+                        <img src="https://new.heliusnew.com/uploads/image/20250813/1755065939953469.png" alt="Spin Crush Logo">
+                    </div>
+                    <div class="logo-face" style="transform: rotateY(180deg) translateZ(100px);">
+                        <img src="https://new.heliusnew.com/uploads/image/20250813/1755065939953469.png" alt="Spin Crush Logo">
+                    </div>
+                    <div class="logo-face" style="transform: rotateY(90deg) translateZ(100px);">
+                        <img src="https://new.heliusnew.com/uploads/image/20250813/1755065939953469.png" alt="Spin Crush Logo">
+                    </div>
+                    <div class="logo-face" style="transform: rotateY(-90deg) translateZ(100px);">
+                        <img src="https://new.heliusnew.com/uploads/image/20250813/1755065939953469.png" alt="Spin Crush Logo">
+                    </div>
+                    <div class="logo-face" style="transform: rotateX(90deg) translateZ(100px);">
+                        <img src="https://new.heliusnew.com/uploads/image/20250813/1755065939953469.png" alt="Spin Crush Logo">
+                    </div>
+                    <div class="logo-face" style="transform: rotateX(-90deg) translateZ(100px);">
+                        <img src="https://new.heliusnew.com/uploads/image/20250813/1755065939953469.png" alt="Spin Crush Logo">
+                    </div>
+                </div>
+            </div>
+            
+            <h1 class="hero-title">Spin Crush</h1>
+            <p class="hero-subtitle">Unlock Elite Gaming & Rewards from the Moment You Join!</p>
+            <a href="https://d35xoc2ezi3ki5.cloudfront.net/safe_spincrush.apk" 
+               class="cta-button" 
+               download="spincrush.apk">🎁 Join Spin Crush Now</a>
+        </div>
+    </div>
+
+    <section class="section-header">
+        <h3>Rewards</h3>
+    </section>
+
+    <section class="card-section">
+        <div class="card-scroll-container">
+            <div class="card-scroll-track">
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065915196350.jpg" alt="Welcome Bonus">
+                    <div>
+                        <h3>Welcome Bonus</h3>
+                        <p>Register now and get free bonus instantly!</p>
+                    </div>
+                </div>
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065914638434.jpg" alt="Promo Code">
+                    <div>
+                        <h3>Promo Code</h3>
+                        <p>Daily free promo codes for all players!</p>
+                    </div>
+                </div>
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065913452899.jpg" alt="Mystery Bonus">
+                    <div>
+                        <h3>Mystery Bonus</h3>
+                        <p>Log in regularly to uncover surprise rewards.</p>
+                    </div>
+                </div>
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065912807249.jpg" alt="Login Gift">
+                    <div>
+                        <h3>Login Gift</h3>
+                        <p>Log in daily and grab your free special gift.</p>
+                    </div>
+                </div>
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065912350475.jpg" alt="Lucky Gullak">
+                    <div>
+                        <h3>Lucky Gullak</h3>
+                        <p>Enjoy nonstop Gullak rewards raining all day!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-header">
+        <h3>Popular Games</h3>
+    </section>
+
+    <section class="card-section" style="max-width: 455px;">
+        <div class="game-carousel-container">
+            <div class="game-carousel">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755067328622545.jpg" alt="Aviator">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755065914330232.jpg" alt="Power of the Kraken">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755065912804395.jpg" alt="Jungle Delight">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755065913320493.jpg" alt="Money Coming">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755065915394134.jpg" alt="Wild Paradise">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755065914115470.jpg" alt="Super Ace">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755067626643930.jpg" alt="Aeon Crocodile">
+                <img src="https://new.heliusnew.com/uploads/image/20250813/1755067670170491.jpg" alt="Coming Soon">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-header">
+        <h3>About Spin Crush</h3>
+    </section>
+
+    <section class="about-section">
+        <div class="card-scroll-container">
+            <div class="card-scroll-track">
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065913420965.jpg" alt="Our Platform">
+                    <div>
+                        <h3>Our Platform</h3>
+                        <p>Spin Crush offers exciting games, smooth gameplay, and non-stop entertainment for every player.</p>
+                    </div>
+                </div>
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755067761412352.jpg" alt="Core Values">
+                    <div>
+                        <h3>Core Values</h3>
+                        <p>We prioritize fairness, transparency, and a rewarding experience for all users.</p>
+                    </div>
+                </div>
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065915451835.jpg" alt="Technology">
+                    <div>
+                        <h3>Technology</h3>
+                        <p>Powered by secure and advanced tech to ensure fast, stable, and seamless play.</p>
+                    </div>
+                </div>
+                <div class="scroll-card">
+                    <img src="https://new.heliusnew.com/uploads/image/20250813/1755065915554900.jpg" alt="Trusted">
+                    <div>
+                        <h3>Trusted</h3>
+                        <p>Millions trust Spin Crush for reliable service, quick payouts, and player-first support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2013 Spin Crush. All rights reserved.</p>
+        <p>Only for users 18+. Please play responsibly.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.card-scroll-container').forEach(container => {
+            const track = container.querySelector('.card-scroll-track');
+            const cards = Array.from(track.children);
+            
+            // Only duplicate cards for rewards section (not about section)
+            if (!container.closest('.about-section')) {
+                cards.forEach(card => {
+                    const clone = card.cloneNode(true);
+                    track.appendChild(clone);
+                });
+            }
+            
+            container.addEventListener('mouseenter', () => {
+                track.style.animationPlayState = 'paused';
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                track.style.animationPlayState = 'running';
+            });
+        });
+        
+        const dice = document.querySelector('.logo-cube');
+        const logoContainer = document.querySelector('.logo-container');
+        logoContainer.addEventListener('mouseenter', () => {
+            dice.style.animationPlayState = 'paused';
+        });
+        logoContainer.addEventListener('mouseleave', () => {
+            dice.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>
